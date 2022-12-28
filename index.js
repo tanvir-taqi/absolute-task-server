@@ -42,6 +42,7 @@ const run = async () => {
   try {
     const usersCollection = client.db("absoluteTask").collection("users");
     const tasksCollection = client.db("absoluteTask").collection("tasks");
+    const commentsCollection = client.db("absoluteTask").collection("comments");
 
     app.post('/users', async (req, res) => {
       const user = req.body;
@@ -91,6 +92,18 @@ const run = async () => {
       res.send(result)
     })
 
+    
+    app.post('/comments', async (req, res) => {
+      const comment = req.body 
+      const result = await commentsCollection.insertOne(comment)
+      res.send(result)
+    })
+    app.get('/comments/:id', async (req, res) => {
+      const id = req.params.id
+      const query = {taskId: id} 
+      const result = await commentsCollection.find(query).toArray()
+      res.send(result)
+    })
 
 
 
