@@ -59,7 +59,6 @@ const run = async () => {
       const email = req.query.email;
       const query = { userEmail: email}
       const result = await tasksCollection.find(query).toArray()
-      console.log(result);
       const remaining = result.filter(task => task.status === 'Incomplete')
       res.send(remaining)
     })
@@ -77,6 +76,20 @@ const run = async () => {
       const result = await tasksCollection.updateOne(filter, updateDoc, options);
     })
 
+    app.get('/compeletedtasks', async (req, res) => {
+      const email = req.query.email;
+      const query = { userEmail: email}
+      const result = await tasksCollection.find(query).toArray()
+      const remaining = result.filter(task => task.status === 'Completed')
+      res.send(remaining)
+    })
+
+    app.delete('/compeletedtasks/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)}
+      const result = await tasksCollection.deleteOne(query)
+      res.send(result)
+    })
 
 
 
